@@ -1,0 +1,20 @@
+{
+  "name": "package tracker",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "package tracker chrome extension",
+  "background": { "scripts": ["main.js"] },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon.png"
+    },
+    "default_title": "package tracker",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "<all_urls>"
+  ]
+}
