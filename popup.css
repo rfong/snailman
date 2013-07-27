@@ -21,9 +21,16 @@ input, select {
 
 .button {
   font-size: 14px;
-  cursor: pointer; }
+  cursor: pointer;
+  transition: color 0.1s;
+  -moz-transition: color 0.1s;
+  -webkit-transition: color 0.1s;
+  -o-transition: color 0.1s; }
   .button:hover {
-    color: #e32d2d; }
+    color: #e32d2d !important; }
+
+.button.delete {
+  color: #666666; }
 
 #main {
   margin-top: 0.3em; }

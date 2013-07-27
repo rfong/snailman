@@ -37,7 +37,7 @@ function display() {
     $('#main').html('');
 
     _.each(response.packages, function(item, tracking) { 
-        if (!item.active) return;
+        if (item.active != active) return;
         var url, el;
         url = getUrl(item);
         if (url==null) return;
