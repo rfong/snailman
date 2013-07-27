@@ -54,7 +54,7 @@ function display() {
           '</a>' +
           '<button class="delete">-</button>'
         );
-        el.find('.info').html('info placeholder');
+        //el.find('.info').html('info placeholder');
 
         el.find('button.delete').click(function() {
           storage.get('packages', function(response) {
@@ -98,15 +98,18 @@ $(document).ready(function() {
     updatePackages({});
   });
 
-  $('button#add').click(function() {
+  var addHandler = function() {
     var service = $('select#service').val(),
         tracking = $('input#tracking').val().toString(),
         description = $('input#description').val().toString();
-
     // any fields still defaulted?
     if (_.some( $('#add-package input'),
         function(e) { return isDefaulted(e) } ))
       return;
+    // reset to defaults
+    $('#add-package input[data-default]').each(function() {
+      $(this).val( $(this).attr('data-default') ).addClass('default');
+    });
 
     storage.get('packages', function(response) {
       packages = response.packages || {};
@@ -123,7 +126,9 @@ $(document).ready(function() {
         };
       updatePackages(packages);
     });
-  });
+  };
+  //$('button#add').click(addHandler);
+  $('#add-package input').keypress( function(e){ if (e.which==13) addHandler() });
 
 });
 
