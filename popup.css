@@ -1,0 +1,29 @@
+body {
+  min-width: 400px; }
+
+.nav {
+  position: relative;
+  text-align: center; }
+
+.right-container {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+#main {
+  margin-top: 0.3em; }
+  #main .item {
+    margin-bottom: 0.5em; }
+    #main .item .delete {
+      float: right; }
+  #main .info {
+    padding-left: 2em; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+input.default {
+  color: #aaaaaa; }
