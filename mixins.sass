@@ -3,3 +3,14 @@
   -moz-transition: #{$prop}
   -webkit-transition: #{$prop}
   -o-transition: #{$prop}
+
+=background-gradient($top, $bottom)
+  background-color: #{$bottom}
+  background-image: -moz-linear-gradient(top, #{$top}, #{$bottom})
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#{$top}), to(#{$bottom}))
+  background-image: -webkit-linear-gradient(top, #{$top}, #{$bottom})
+  background-image: -o-linear-gradient(top, #{$top}, #{$bottom})
+  background-image: linear-gradient(to bottom, #{$top}, #{$bottom})
+  background-repeat: repeat-x
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$bottom}', endColorstr='#{$bottom}', GradientType=0)
+  

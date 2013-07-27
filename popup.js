@@ -1,25 +1,13 @@
 var storage = chrome.storage.local;
 
+var urls = {
+  'USPS': "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum=%s",
+  'UPS': "http://wwwapps.ups.com/etracking/tracking.cgi?tracknum=%s&track.x=Track",
+  'FedEx': "https://www.fedex.com/fedextrack/?tracknumbers=%s"
+  };
+
 function getUrl(item) {
-  if (item.tracking == null) return null;
-  switch(item.service) {
-    case 'USPS':
-      return "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum=" + item.tracking;
-    case 'UPS':
-      return "http://wwwapps.ups.com/etracking/tracking.cgi?tracknum=" + item.tracking + "&track.x=Track";
-    default:
-      return null;
-  }
-}
-
-var active = true;
-
-// only call display fn if state changed
-function setActive(newState) {
-  if (newState != active) {
-    active = newState;
-    display();
-  }
+  return urls[item.service].replace('%s', item.tracking);
 }
 
 function isDefaulted(selector) {
@@ -37,7 +25,6 @@ function display() {
     $('#main').html('');
 
     _.each(response.packages, function(item, tracking) { 
-        if (item.active != active) return;
         var url, el;
         url = getUrl(item);
         if (url==null) return;
@@ -72,6 +59,10 @@ function display() {
 
 $(document).ready(function() {
 
+  // populate service dropdown
+  for (var service in urls)
+    $('select#service').append('<option value="'+service+'">'+service+'</option>');
+
   // set up inputs with defaults
   $('input[data-default]').each(function() {
     var val = $(this).attr('data-default');
@@ -89,14 +80,6 @@ $(document).ready(function() {
   });
 
   display();
-
-  $('#current').click(function(){ setActive(true) });
-  $('#history').click(function(){ setActive(false) });
-
-  // tmp for debug
-  $('#clear').click(function() {
-    updatePackages({});
-  });
 
   var addHandler = function() {
     var service = $('select#service').val(),
@@ -122,8 +105,8 @@ $(document).ready(function() {
         service: service,
         tracking: tracking,
         description: description,
-        active: true
         };
+      console.log(description, service, tracking);
       updatePackages(packages);
     });
   };
