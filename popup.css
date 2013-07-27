@@ -14,8 +14,12 @@ body {
   margin-top: 0.3em; }
   #main .item {
     margin-bottom: 0.5em; }
-    #main .item .delete {
-      float: right; }
+    #main .item .header {
+      position: relative; }
+      #main .item .header .delete {
+        position: absolute;
+        top: 0;
+        right: 0; }
   #main .info {
     padding-left: 2em; }
 
