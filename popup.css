@@ -1,5 +1,11 @@
 body {
-  min-width: 400px; }
+  min-width: 400px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px; }
+
+input, select {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px; }
 
 .nav {
   position: relative;
@@ -10,12 +16,22 @@ body {
   top: 0;
   right: 0; }
 
+#clear:hover {
+  color: #e32d2d; }
+
+.button {
+  font-size: 14px;
+  cursor: pointer; }
+  .button:hover {
+    color: #e32d2d; }
+
 #main {
   margin-top: 0.3em; }
   #main .item {
     margin-bottom: 0.5em; }
     #main .item .header {
-      position: relative; }
+      position: relative;
+      padding-right: 15px; }
       #main .item .header .delete {
         position: absolute;
         top: 0;

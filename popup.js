@@ -52,11 +52,11 @@ function display() {
               onClick="chrome.tabs.create({url:" + url + "})" >'
             + item.service + ' ' + tracking +
           '</a>' +
-          '<button class="delete">-</button>'
+          '<i class="delete button icon-fixed-width icon-trash"></i>'
         );
         //el.find('.info').html('info placeholder');
 
-        el.find('button.delete').click(function() {
+        el.find('.delete').click(function() {
           storage.get('packages', function(response) {
             packages = response.packages;
             delete packages[tracking];
@@ -90,11 +90,11 @@ $(document).ready(function() {
 
   display();
 
-  $('button#current').click(function(){ setActive(true) });
-  $('button#history').click(function(){ setActive(false) });
+  $('#current').click(function(){ setActive(true) });
+  $('#history').click(function(){ setActive(false) });
 
   // tmp for debug
-  $('button#clear').click(function() {
+  $('#clear').click(function() {
     updatePackages({});
   });
 
@@ -127,7 +127,7 @@ $(document).ready(function() {
       updatePackages(packages);
     });
   };
-  //$('button#add').click(addHandler);
+  //$('#add').click(addHandler);
   $('#add-package input').keypress( function(e){ if (e.which==13) addHandler() });
 
 });
