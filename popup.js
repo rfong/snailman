@@ -1,18 +1,129 @@
-window.onload = function() {
-  var urls = {
-      'USPS': function(num) { return "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum="+num },
-      'UPS': function(num) { return "http://wwwapps.ups.com/etracking/tracking.cgi?tracknum=" + num + "&track.x=Track" }
-    },
-    items = [
-      {num:'9274899999165900403878', service:'USPS', name:'nokia'},
-      {num:'9405503699300407380384', service:'USPS', name:'bpal'},
-      {num:'1Z7759450319977203', service:'UPS', name:'mouse'},
-    ];
+var storage = chrome.storage.local;
+
+function getUrl(item) {
+  if (item.tracking == null) return null;
+  switch(item.service) {
+    case 'USPS':
+      return "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum=" + item.tracking;
+    case 'UPS':
+      return "http://wwwapps.ups.com/etracking/tracking.cgi?tracknum=" + item.tracking + "&track.x=Track";
+    default:
+      return null;
+  }
+}
+
+var active = true;
+
+// only call display fn if state changed
+function setActive(newState) {
+  if (newState != active) {
+    active = newState;
+    display();
+  }
+}
+
+function isDefaulted(selector) {
+  return $(selector).val() == $(selector).attr('data-default');
+}
+
+function updatePackages(packages) {
+  storage.set({packages:packages});
+  display();
+}
+
+// refresh content
+function display() {
+  storage.get('packages', function(response) {
+    $('#main').html('');
+
+    _.each(response.packages, function(item, tracking) { 
+        if (!item.active) return;
+        var url, el;
+        url = getUrl(item);
+        if (url==null) return;
  
-  _.each(items, function(item) { 
-    var el = document.createElement('div');
-    el.innerHTML = '<a target="_blank" href="' + urls[item.service](item.num) + '">' + item.name + '</a>';
-    el.onClick = 'chrome.tabs.create({url: ' + el.getAttribute('href') + '})';
-    document.body.appendChild(el);
+        el = $('<div class="item">\
+            <div class="header"/>\
+            <div class="info"/>\
+          </div>');
+        el.find('.header').html(
+          (item.description ? '<b>'+item.description+'</b> - ' : '') +
+          '<a target="_blank" href="' + url + '" \
+              onClick="chrome.tabs.create({url:" + url + "})" >'
+            + item.service + ' ' + tracking +
+          '</a>' +
+          '<button class="delete">-</button>'
+        );
+        el.find('.info').html('info placeholder');
+
+        el.find('button.delete').click(function() {
+          storage.get('packages', function(response) {
+            packages = response.packages;
+            delete packages[tracking];
+            updatePackages(packages);
+          });
+        });
+  
+        $('#main').append(el);
+      }
+    );
   });
-};
+}
+
+$(document).ready(function() {
+
+  // set up inputs with defaults
+  $('input[data-default]').each(function() {
+    var val = $(this).attr('data-default');
+    if (val) $(this).val(val).addClass('default');
+  })
+  .focusin(function() {
+    if ($(this).val() == $(this).attr('data-default'))
+      $(this).val('')
+        .removeClass('default');
+  })
+  .focusout(function() {
+    if ($(this).val().length==0)
+      $(this).val( $(this).attr('data-default') )
+        .addClass('default');
+  });
+
+  display();
+
+  $('button#current').click(function(){ setActive(true) });
+  $('button#history').click(function(){ setActive(false) });
+
+  // tmp for debug
+  $('button#clear').click(function() {
+    updatePackages({});
+  });
+
+  $('button#add').click(function() {
+    var service = $('select#service').val(),
+        tracking = $('input#tracking').val().toString(),
+        description = $('input#description').val().toString();
+
+    // any fields still defaulted?
+    if (_.some( $('#add-package input'),
+        function(e) { return isDefaulted(e) } ))
+      return;
+
+    storage.get('packages', function(response) {
+      packages = response.packages || {};
+
+      // already exists
+      if (_.some(packages, function(item,item_tracking){ item_tracking == tracking }))
+        return;
+
+      packages[tracking] = {
+        service: service,
+        tracking: tracking,
+        description: description,
+        active: true
+        };
+      updatePackages(packages);
+    });
+  });
+
+});
+
