@@ -3,7 +3,9 @@ var storage = chrome.storage.local;
 var urls = {
   'USPS': "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum=%s",
   'UPS': "http://wwwapps.ups.com/etracking/tracking.cgi?tracknum=%s&track.x=Track",
-  'FedEx': "https://www.fedex.com/fedextrack/?tracknumbers=%s"
+  'FedEx': "https://www.fedex.com/fedextrack/?tracknumbers=%s",
+  'Japan Post': "https://trackings.post.japanpost.jp/services/srv/search/direct?locale=en&reqCodeNo1=%s",
+  'DHL': "http://webtrack.dhlglobalmail.com/?trackingnumber=%s",
   };
 
 function getUrl(item) {
