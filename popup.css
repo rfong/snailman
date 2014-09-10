@@ -7,6 +7,9 @@ input, select {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 13px; }
 
+input {
+  width: 11em; }
+
 .nav {
   position: relative;
   text-align: center; }
