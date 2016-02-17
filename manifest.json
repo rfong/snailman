@@ -1,6 +1,6 @@
 {
   "name": "Snailman",
-  "version": "1.0",
+  "version": "1.0.1",
   "manifest_version": 2,
   "description": "package tracker chrome extension",
   "background": { "scripts": ["main.js"] },
@@ -11,6 +11,7 @@
     "default_title": "package tracker",
     "default_popup": "popup.html"
   },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
     "tabs",
     "http://*/*",

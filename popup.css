@@ -5,10 +5,8 @@ body {
 
 input, select {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 13px; }
-
-input {
-  width: 11em; }
+  font-size: 13px;
+  outline: none; }
 
 .nav {
   position: relative;
@@ -36,7 +34,7 @@ input {
     color: #e32d2d !important; }
 
 .button.delete {
-  color: #666666; }
+  color: #666; }
 
 #main {
   margin-top: 0.3em; }
@@ -59,4 +57,6 @@ input {
   float: right; }
 
 input.default {
-  color: #aaaaaa; }
+  color: #aaa; }
+
+/*# sourceMappingURL=popup.css.map */
