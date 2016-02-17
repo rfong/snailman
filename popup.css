@@ -1,12 +1,16 @@
-body {
-  min-width: 400px;
+body, table, td, input, select {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 13px; }
 
-input, select {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  outline: none; }
+body {
+  min-width: 400px; }
+
+input {
+  outline: none;
+  width: 100%; }
+
+#main {
+  width: 100%; }
 
 .nav {
   position: relative;
@@ -30,11 +34,14 @@ input, select {
   -moz-transition: color 0.1s;
   -webkit-transition: color 0.1s;
   -o-transition: color 0.1s; }
-  .button:hover {
-    color: #e32d2d !important; }
 
 .button.delete {
   color: #666; }
+  .button.delete:hover {
+    color: #e32d2d !important; }
+
+.button#add-button:hover {
+  color: #7cd87c; }
 
 #main {
   margin-top: 0.3em; }

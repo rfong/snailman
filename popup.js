@@ -54,29 +54,32 @@ function updatePackages(packages) {
 function display() {
   storage.get('packages', function(response) {
     console.log(response.packages);
-    $('#main').html('');
+    $('#main tr:not(#add-package)').remove();
 
     var linkTemplate = _.template('\
       <a target="_blank" href="{{url}}" \
          onClick="chrome.tabs.create({url:{{url}}})">\
         {{service}} {{tracking}}</a>');
 
+    var rowTemplate = _.template('\
+      <tr class="item">\
+        <td><b>{{description}}</b></td>\
+        <td>{{tracking}}</td>\
+        <td><i class="delete button icon-fixed-width icon-trash"></i></td>\
+      </tr>');
+
     _.each(response.packages, function(item, tracking) { 
         var url, el;
         url = getUrl(item);
  
-        el = $('<div class="item">\
-            <div class="header"/>\
-            <div class="info"/>\
-          </div>');
-        el.find('.header').html(
-          (item.description ? '<b>'+item.description+'</b> - ' : '') +
-          (item.service == null ?
-           tracking + ' (unidentified carrier)':
-           linkTemplate({url: url, service: item.service, tracking: tracking})
-          ) +
-          '<i class="delete button icon-fixed-width icon-trash"></i>'
-        );
+        el = $(rowTemplate({
+          description: item.description,
+          tracking: (
+            item.service == null ?
+            tracking + ' (unidentified carrier)' :
+            linkTemplate({url: url, service: item.service, tracking: tracking})
+          ),
+        }));
 
         el.find('.delete').click(function() {
           storage.get('packages', function(response) {
@@ -113,6 +116,7 @@ $(document).ready(function() {
   };
   $('#add-package input').keypress(
     function(e){ if (e.which==13) addHandler() });
+  $('#add-button').click(addHandler);
 
 });
 
